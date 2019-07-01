@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.ISCaptchaDAO">
+	<resultMap id="sCaptcha_DB_Result" type="sCaptcha">
+		<result column="code" property="code" />
+		<result column="captcha" property="captcha" />
+		<result column="biz_type" property="bizType" />
+		<result column="mobile" property="mobile" />
+		<result column="send_datetime" property="sendDatetime" />
+		<result column="invalid_datetime" property="invalidDatetime" />
+		<result column="check_datetime" property="checkDatetime" />
+		<result column="company_code" property="companyCode" />
+		<result column="system_code" property="systemCode" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="mobile != null and mobile != '' ">
+				AND t.mobile = #{mobile}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="bizType != null and bizType != '' ">
+				AND t.biz_type = #{bizType}
+			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_sCaptcha" parameterType="sCaptcha"
+		resultMap="sCaptcha_DB_Result">
+		SELECT
+		code
+		,captcha
+		,biz_type
+		,mobile
+		,status
+		,send_datetime
+		,invalid_datetime
+		,check_datetime
+		,company_code
+		,system_code
+		FROM
+		tjc_sms_captcha t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				#{order}
+			</if>
+		</trim>
+	</select>
+	
+	<insert id="insert_sCaptcha" parameterType="sCaptcha">
+		INSERT INTO
+		tjc_sms_captcha(
+		code
+		,captcha
+		,biz_type
+		,status
+		,mobile
+		,send_datetime
+		,invalid_datetime
+		,check_datetime
+		,company_code
+		,system_code
+		)
+		VALUES(
+		#{code}
+		,#{captcha}
+		,#{bizType}
+		,#{status}
+		,#{mobile}
+		,#{sendDatetime}
+		,#{invalidDatetime}
+		,#{checkDatetime}
+		,#{companyCode}
+		,#{systemCode}
+		)
+	</insert>
+	
+	<update id="update_sCaptcha" parameterType="sCaptcha">
+		UPDATE tjc_sms_captcha
+		SET 
+		status = #{status}
+		,check_datetime = #{checkDatetime}	
+		WHERE
+		code = #{code}
+	</update>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.ISOutDAO">
+	<resultMap id="sOut_DB_Result" type="sOut">
+		<result column="code" property="code" />
+		<result column="channel" property="channel" />
+		<result column="mobile" property="mobile" />
+		<result column="content" property="content" />
+		<result column="error_code" property="errorCode" />
+		<result column="error_info" property="errorInfo" />
+		<result column="send_datetime" property="sendDatetime" />
+		<result column="company_code" property="companyCode" />
+		<result column="system_code" property="systemCode" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="channel != null and channel != '' ">
+				AND t.channel = #{channel}
+			</if>
+			<if test="mobile != null and mobile != '' ">
+				AND t.mobile = #{mobile}
+			</if>
+			<if test="errorCode != null and errorCode != '' ">
+				AND t.error_code = #{errorCode}
+			</if>
+			<if test="errorInfo != null and errorInfo != '' ">
+				AND t.error_info = #{errorInfo}
+			</if>
+			<if test="sendDatetimeStart != null and sendDatetimeStart != '' ">
+				<![CDATA[AND t.send_datetime >= #{sendDatetimeStart}]]>
+			</if>
+			<if test="sendDatetimeEnd != null and sendDatetimeEnd != '' ">
+				<![CDATA[AND t.send_datetime <= #{sendDatetimeEnd}]]>
+			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_sOut" parameterType="sOut"
+		resultMap="sOut_DB_Result">
+		SELECT
+		code
+		,channel
+		,mobile
+		,content
+		,error_code
+		,error_info
+		,send_datetime
+		,company_code
+		,system_code
+		FROM
+		tjc_sms_out t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				${order}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="select_sOut_count" parameterType="sOut"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tjc_sms_out t
+		<include refid="where_condition" />
+	</select>
+	
+	<insert id="insert_sOut" parameterType="sOut">
+		INSERT INTO
+		tjc_sms_out(
+		code
+		,channel
+		,mobile
+		,content
+		,error_code
+		,error_info
+		,send_datetime
+		,company_code
+		,system_code
+		)
+		VALUES(
+		#{code}
+		,#{channel}
+		,#{mobile}
+		,#{content}
+		,#{errorCode}
+		,#{errorInfo}
+		,#{sendDatetime}
+		,#{companyCode}
+		,#{systemCode}
+		)
+	</insert>
+</mapper>

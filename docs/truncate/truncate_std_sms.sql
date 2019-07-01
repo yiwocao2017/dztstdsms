@@ -1,0 +1,10 @@
+truncate tjc_company;
+truncate tjc_configure;
+truncate tjc_day_report;
+truncate tjc_sms_captcha;
+truncate tjc_sms_out;
+truncate tjc_sms_pool;
+truncate tstd_items;
+truncate tstd_receiver;
+truncate tstd_sms;
+truncate tstd_system_channel;

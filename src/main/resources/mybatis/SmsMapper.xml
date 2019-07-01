@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.ISmsDAO">
+	<resultMap id="sms_DB_Result" type="sms">
+		<result column="id" property="id" />
+		<result column="from_system_code" property="fromSystemCode" />
+		<result column="channel_type" property="channelType" />
+		<result column="push_type" property="pushType" />
+		<result column="to_system_code" property="toSystemCode" />
+		<result column="to_kind" property="toKind" />
+		<result column="to_mobile" property="toMobile" />
+		<result column="name" property="name" />
+		<result column="wechat_id" property="wechatId" />
+		<result column="jpush_id" property="jpushId" />
+		<result column="sms_type" property="smsType" />
+		<result column="sms_title" property="smsTitle" />
+		<result column="sms_content" property="smsContent" />
+		<result column="status" property="status" />
+		<result column="create_datetime" property="createDatetime" />
+		<result column="topush_datetime" property="topushDatetime" />
+		<result column="pushed_datetime" property="pushedDatetime" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null and id != '' ">
+				AND t.id = #{id}
+			</if>
+			<if test="fromSystemCode != null and fromSystemCode != '' ">
+				AND t.from_system_code = #{fromSystemCode}
+			</if>
+			<if test="channelType != null and channelType != '' ">
+				AND t.channel_type = #{channelType}
+			</if>
+			<if test="pushType != null and pushType != '' ">
+				AND t.push_type = #{pushType}
+			</if>
+			<if test="toSystemCode != null and toSystemCode != '' ">
+				AND t.to_system_code = #{toSystemCode}
+			</if>
+			<if test="toKind != null and toKind != '' ">
+				AND t.to_kind = #{toKind}
+			</if>
+			<if test="toMobile != null and toMobile != '' ">
+				AND t.to_mobile = #{toMobile}
+			</if>
+			<if test="smsType != null and smsType != '' ">
+				AND t.sms_type = #{smsType}
+			</if>
+			<if test="smsTitle != null and smsTitle != '' ">
+				AND t.sms_title like "%"#{smsTitle}"%"
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="name != null and name != '' ">
+				AND tr.name like "%"#{name}"%"
+			</if>
+		</trim>
+	</sql>
+	<select id="select_sms" parameterType="sms" resultMap="sms_DB_Result">
+		SELECT
+		t.id
+		,t.from_system_code
+		,t.channel_type
+		,t.push_type
+		,t.to_system_code
+		,t.to_kind
+		,t.to_mobile
+		,tr.name
+		,tr.wechat_id
+		,tr.jpush_id
+		,t.sms_type
+		,t.sms_title
+		,t.sms_content
+		,t.status
+		,t.create_datetime
+		,t.topush_datetime
+		,t.pushed_datetime
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		tstd_sms t left join tstd_receiver tr on (t.to_system_code = tr.system_code and t.to_mobile = tr.mobile)
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_sms_count" parameterType="sms"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tstd_sms t left join tstd_receiver tr on (t.to_system_code = tr.system_code and t.to_mobile = tr.mobile)
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_sms" parameterType="sms">
+		INSERT INTO
+		tstd_sms(
+		from_system_code
+		,channel_type
+		,push_type
+		,to_system_code
+		,to_kind
+		,to_mobile
+		,sms_type
+		,sms_title
+		,sms_content
+		,status
+		,create_datetime
+		,topush_datetime
+		,pushed_datetime
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{fromSystemCode}
+		,#{channelType}
+		,#{pushType}
+		,#{toSystemCode}
+		,#{toKind}
+		,#{toMobile}
+		,#{smsType}
+		,#{smsTitle}
+		,#{smsContent}
+		,#{status}
+		,#{createDatetime}
+		,#{topushDatetime}
+		,#{pushedDatetime}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+	
+	<update id="update_sms" parameterType="sms">
+		UPDATE tstd_sms
+		SET
+		sms_type = #{smsType}
+		,to_kind =#{toKind}
+		,sms_title = #{smsTitle}
+		,sms_content = #{smsContent}
+		,pushed_datetime = #{pushedDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE id = #{id}
+	</update>
+
+	<update id="update_sms_status" parameterType="sms">
+		UPDATE tstd_sms
+		SET
+		status = #{status}
+		,pushed_datetime = #{pushedDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		WHERE id = #{id}
+	</update>
+</mapper>

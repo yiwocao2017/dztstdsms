@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.IItemsDAO">
+	<resultMap id="items_DB_Result" type="items">
+		<result column="user_id" property="userId" />
+		<result column="real_name" property="realName" />
+		<result column="first" property="first" />
+		<result column="department" property="department" />
+		<result column="content" property="content" />
+		<result column="telephone" property="telephone" />
+		<result column="remark" property="remark" />
+		<result column="system_code" property="systemCode" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="userId != null and userId != '' ">
+				AND t.user_id = #{userId}
+			</if>
+			<if test="realName != null and realName != '' ">
+				AND t.real_name = #{realName}
+			</if>
+			<if test="department != null and department != '' ">
+				AND t.department = #{department}
+			</if>
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_items" parameterType="items" resultMap="items_DB_Result">
+		SELECT
+		t.code
+		,t.user_id
+		,t.real_name
+		,t.first
+		,t.department
+		,t.content
+		,t.telephone
+		,t.remark
+		,t.system_code
+		FROM
+		tstd_items t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_items_count" parameterType="items"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tstd_items t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_items" parameterType="items">
+		INSERT INTO
+		tstd_items(
+		code
+		,user_id
+		,real_name
+		,first
+		,department
+		,content
+		,telephone
+		,remark
+		,system_code
+		)
+		VALUES(
+		#{code}
+		,#{userId}
+		,#{realName}
+		,#{first}
+		,#{department}
+		,#{content}
+		,#{telephone}
+		,#{remark}
+		,#{systemCode}
+		)
+	</insert>
+	
+	<delete id="delete_items" parameterType="items">
+		DELETE FROM tstd_items
+		WHERE code = #{code}
+	</delete>
+
+	<update id="update_items" parameterType="items">
+		UPDATE tstd_items
+		SET
+		real_name = #{realName}
+		,first = #{first}
+		,department = #{department}
+		,content = #{content}
+		,telephone = #{telephone}
+		,remark = #{remark}
+		,system_code = #{systemCode}
+		WHERE code = #{code}
+	</update>
+</mapper>

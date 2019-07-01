@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.ISystemChannelDAO">
+	<resultMap id="systemChannel_DB_Result" type="systemChannel">
+		<result column="id" property="id" />
+		<result column="system_code" property="systemCode" />
+		<result column="channel_type" property="channelType" />
+		<result column="push_type" property="pushType" />
+		<result column="status" property="status" />
+		<result column="push_system" property="pushSystem" />
+		
+		<result column="private_key1" property="privateKey1" />
+		<result column="private_key2" property="privateKey2" />
+		<result column="private_key3" property="privateKey3" />
+		<result column="private_key4" property="privateKey4" />
+		<result column="private_key5" property="privateKey5" />
+		
+		<result column="private_key6" property="privateKey6" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null and id != '' ">
+				AND t.id = #{id}
+			</if>
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
+			</if>
+			<if test="channelType != null and channelType != '' ">
+				AND t.channel_type = #{channelType}
+			</if>
+			<if test="pushType != null and pushType != '' ">
+				AND t.push_type = #{pushType}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_systemChannel" parameterType="systemChannel" resultMap="systemChannel_DB_Result">
+		SELECT
+		t.id
+		,t.system_code
+		,t.channel_type
+		,t.push_type
+		,t.status
+		,t.push_system
+		,t.private_key1
+		,t.private_key2
+		,t.private_key3
+		,t.private_key4
+		,t.private_key5
+		,t.private_key6
+		,t.remark
+		FROM
+		tstd_system_channel t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_systemChannel_count" parameterType="systemChannel"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tstd_system_channel t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_systemChannel" parameterType="systemChannel">
+		INSERT INTO
+		tstd_system_channel(
+		system_code
+		,channel_type
+		,push_type
+		,status
+		,push_system
+		,private_key1
+		,private_key2
+		,private_key3
+		,private_key4
+		,private_key5
+		,private_key6
+		,remark
+		)
+		VALUES(
+		#{systemCode}
+		,#{channelType}
+		,#{pushType}
+		,#{status}
+		,#{pushSystem}
+		,#{privateKey1}
+		,#{privateKey2}
+		,#{privateKey3}
+		,#{privateKey4}
+		,#{privateKey5}
+		,#{privateKey6}
+		,#{remark}
+		)
+	</insert>
+	
+	<delete id="delete_systemChannel" parameterType="systemChannel">
+		DELETE FROM tstd_system_channel
+		WHERE id = #{id}
+	</delete>
+
+	<update id="update_systemChannel" parameterType="systemChannel">
+		UPDATE tstd_system_channel
+		SET
+		system_code = #{systemCode}
+		,channel_type = #{channelType}
+		,push_type = #{pushType}
+		,status = #{status}
+		,push_system = #{pushSystem}
+		,private_key1 = #{privateKey1}
+		,private_key2 = #{privateKey2}
+		,private_key3 = #{privateKey3}
+		<!-- ,private_key4 = #{privateKey4}
+		,private_key5 = #{privateKey5}
+		,private_key6 = #{privateKey6} -->
+		,remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="update_systemChannel_privateKey3" parameterType="systemChannel">
+		UPDATE tstd_system_channel
+		SET
+		private_key3 = #{privateKey3}
+		WHERE id = #{id}
+	</update>
+</mapper>

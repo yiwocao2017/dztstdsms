@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.ISystemTemplateDAO">
+	<resultMap id="systemTemplate_DB_Result" type="systemTemplate">
+		<result column="id" property="id" />
+		<result column="system_code" property="systemCode" />
+		<result column="channel_type" property="channelType" />
+		<result column="push_type" property="pushType" />
+		<result column="template_id" property="templateId" />
+		<result column="title" property="title" />
+		<result column="url" property="url" />
+		<result column="key1" property="key1" />
+		<result column="key2" property="key2" />
+		<result column="key3" property="key3" />
+		<result column="content" property="content" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null and id != '' ">
+				AND t.id = #{id}
+			</if>
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
+			</if>
+			<if test="channelType != null and channelType != '' ">
+				AND t.channel_type= #{channelType}
+			</if>
+			<if test="pushType != null and pushType != '' ">
+				AND t.push_type = #{pushType}
+			</if>
+			<if test="templateId != null and templateId != '' ">
+				AND t.template_id = #{templateId}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_systemTemplate" parameterType="systemTemplate" resultMap="systemTemplate_DB_Result">
+		SELECT
+		t.id
+		,t.system_code
+		,t.channel_type
+		,t.push_type
+		,t.template_id
+		,t.title
+		,t.url
+		,t.key1
+		,t.key2
+		,t.key3
+		,t.content
+		,t.remark
+		FROM
+		tstd_system_template t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_systemTemplate_count" parameterType="systemTemplate"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tstd_system_template t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_systemTemplate" parameterType="systemTemplate">
+		INSERT INTO
+		tstd_system_template(
+		system_code
+		,channel_type
+		,push_type
+		,template_id
+		,title
+		,url
+		,key1
+		,key2
+		,key3
+		,content
+		,remark
+		)
+		VALUES(
+		#{systemCode}
+		,#{channelType}
+		,#{pushType}
+		,#{templateId}
+		,#{title}
+		,#{url}
+		,#{key1}
+		,#{key2}
+		,#{key3}
+		,#{content}
+		,#{remark}
+		)
+	</insert>
+	
+	<delete id="delete_systemTemplate" parameterType="systemTemplate">
+		DELETE FROM tstd_system_template
+		WHERE id = #{id}
+	</delete>
+
+	<update id="update_systemTemplate" parameterType="systemTemplate">
+		UPDATE tstd_system_template
+		SET
+		system_code = #{systemCode}
+		,channel_type = #{channelType}
+		,push_type = #{pushType}
+		,template_id = #{templateId}
+		,title = #{title}
+		,url = #{url}
+		,key1 = #{key1}
+		,key2 = #{key2}
+		,key3 = #{key3}
+		,content = #{content}
+		,remark = #{remark}
+		WHERE id = #{id}
+	</update>
+</mapper>

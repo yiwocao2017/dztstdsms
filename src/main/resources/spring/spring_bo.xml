@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	
+	<!-- 分页BO层注入paginableDao -->
+	
+	<bean id="dayReportBO" class="com.std.sms.bo.impl.DayReportBOImpl">
+		<property name="paginableDAO" ref="dayReportDAOImpl" />
+	</bean>
+	
+	<bean id="sOutBO" class="com.std.sms.bo.impl.SOutBOImpl">
+		<property name="paginableDAO" ref="sOutDAOImpl" />
+	</bean>
+	
+	<bean id="systemChannelBO" class="com.std.sms.bo.impl.SystemChannelBOImpl">
+		<property name="paginableDAO" ref="systemChannelDAOImpl" />
+	</bean>
+	
+	<bean id="receiverBO" class="com.std.sms.bo.impl.ReceiverBOImpl">
+		<property name="paginableDAO" ref="receiverDAOImpl" />
+	</bean>
+	
+	<bean id="smsBO" class="com.std.sms.bo.impl.SmsBOImpl">
+		<property name="paginableDAO" ref="smsDAOImpl" />
+	</bean>
+	
+	<bean id="itemsBO" class="com.std.sms.bo.impl.ItemsBOImpl">
+		<property name="paginableDAO" ref="itemsDAOImpl" />
+	</bean>
+	
+	<bean id="systemTemplateBO" class="com.std.sms.bo.impl.SystemTemplateBOImpl">
+		<property name="paginableDAO" ref="systemTemplateDAOImpl" />
+	</bean>
+	
+	<bean id="sysDictBO" class="com.std.sms.bo.impl.SYSDictBOImpl">
+		<property name="paginableDAO" ref="sysDictDAOImpl"/>
+	</bean>	
+</beans>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.IReceiverDAO">
+	<resultMap id="receiver_DB_Result" type="receiver">
+		<result column="mobile" property="mobile" />
+		<result column="system_code" property="systemCode" />
+		<result column="name" property="name" />
+		<result column="level" property="level" />
+		<result column="wechat_id" property="wechatId" />
+		<result column="jpush_id" property="jpushId" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="mobile != null and mobile != '' ">
+				AND t.mobile = #{mobile}
+			</if>
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
+			</if>
+			<if test="name != null and name != '' ">
+				AND t.name = #{name}
+			</if>
+			<if test="level != null and level != '' ">
+				AND t.level = #{level}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_receiver" parameterType="receiver" resultMap="receiver_DB_Result">
+		SELECT
+		t.mobile
+		,t.system_code
+		,t.name
+		,t.level
+		,t.wechat_id
+		,t.jpush_id
+		,t.remark
+		FROM
+		tstd_receiver t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_receiver_count" parameterType="receiver"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tstd_receiver t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_receiver" parameterType="receiver">
+		INSERT INTO
+		tstd_receiver(
+		mobile
+		,system_code
+		,name
+		,level
+		,wechat_id
+		,jpush_id
+		,remark
+		)
+		VALUES(
+		#{mobile}
+		,#{systemCode}
+		,#{name}
+		,#{level}
+		,#{wechatId}
+		,#{jpushId}
+		,#{remark}
+		)
+	</insert>
+	
+	<delete id="delete_receiver" parameterType="systemChannel">
+		DELETE FROM tstd_receiver
+		WHERE mobile = #{mobile} AND system_code = #{systemCode}
+	</delete>
+
+	<update id="update_receiver" parameterType="receiver">
+		UPDATE tstd_receiver
+		SET
+		name = #{name}
+		,level = #{level}
+		,wechat_id = #{wechatId}
+		,jpush_id = #{jpushId}
+		,remark = #{remark}
+		WHERE mobile = #{mobile} AND system_code = #{systemCode}
+	</update>
+	
+	<update id="update_receiver_wechatId" parameterType="receiver">
+		UPDATE tstd_receiver
+		SET
+		name = #{name}
+		,wechat_id = #{wechatId}
+		,remark = #{remark}
+		WHERE mobile = #{mobile} AND system_code = #{systemCode}
+	</update>
+	
+	<update id="update_receiver_jpushId" parameterType="receiver">
+		UPDATE tstd_receiver
+		SET
+		jpush_id = #{jpushId}
+		,remark = #{remark}
+		WHERE mobile = #{mobile} AND system_code = #{systemCode}
+	</update>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>		
+		<typeAlias alias="company" type="com.std.sms.domain.Company" />
+		<typeAlias alias="configure" type="com.std.sms.domain.Configure" />
+		<typeAlias alias="sOut" type="com.std.sms.domain.SOut" />
+		<typeAlias alias="pool" type="com.std.sms.domain.Pool" />
+		<typeAlias alias="dayReport" type="com.std.sms.domain.DayReport" />
+		
+		<typeAlias alias="sCaptcha" type="com.std.sms.domain.SCaptcha" />
+		<typeAlias alias="systemChannel" type="com.std.sms.domain.SystemChannel" />
+		<typeAlias alias="receiver" type="com.std.sms.domain.Receiver" />
+		<typeAlias alias="sms" type="com.std.sms.domain.Sms" />
+		<typeAlias alias="items" type="com.std.sms.domain.Items" />
+		
+		<typeAlias alias="systemTemplate" type="com.std.sms.domain.SystemTemplate" />
+		<typeAlias alias="sysDict" type="com.std.sms.domain.SYSDict" />
+	</typeAliases>
+</configuration>	

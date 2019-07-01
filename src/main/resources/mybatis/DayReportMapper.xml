@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.IDayReportDAO">
+	<resultMap id="dayReport_DB_Result" type="dayReport">
+		<result column="code" property="code" />
+		<result column="company_code" property="companyCode" />
+		<result column="channel" property="channel" />
+		<result column="suc_times" property="sucTimes" />
+		<result column="fail_times" property="failTimes" />
+		<result column="report_date" property="reportDate" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="channel != null and channel != '' ">
+				AND t.channel = #{channel}
+			</if>
+			<if test="reportDate != null and reportDate != '' ">
+				AND t.report_date = #{reportDate}
+			</if>
+			<if test="reportDatetimeStart != null and reportDatetimeStart != '' ">
+				<![CDATA[AND t.report_date >= #{reportDatetimeStart}]]>
+			</if>
+			<if test="reportDatetimeEnd != null and reportDatetimeEnd != '' ">
+				<![CDATA[AND t.report_date <= #{reportDatetimeEnd}]]>
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_dayReport" parameterType="dayReport"
+		resultMap="dayReport_DB_Result">
+		SELECT
+		code
+		,company_code
+		,channel
+		,suc_times
+		,fail_times
+		,report_date
+		FROM
+		tjc_day_report t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				${order}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="select_dayReport_count" parameterType="dayReport"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tjc_day_report t
+		<include refid="where_condition" />
+	</select>
+	
+	<insert id="insert_dayReport" parameterType="dayReport">
+		INSERT INTO
+		tjc_day_report(
+		code
+		,company_code
+		,channel
+		,suc_times
+		,fail_times
+		,report_date
+		)
+		VALUES(
+		#{code}
+		,#{companyCode}
+		,#{channel}
+		,#{sucTimes}
+		,#{failTimes}
+		,#{reportDate}
+		)
+	</insert>
+	
+<!-- 	<update id="update_xnSmsForm" parameterType="xnSmsForm">
+		UPDATE xn_sms_form
+		SET
+		facilitator = #{facilitator}
+		,account = #{account}
+		,password = #{password}
+		,user_id = #{userId}
+		WHERE
+		code = #{code}
+	</update>
+	
+	<delete id="delete_xnSmsForm" parameterType="xnSmsForm">
+		DELETE FROM
+		xn_sms_configure
+		WHERE
+		company_code = #{companyCode}
+	</delete> -->
+
+</mapper>

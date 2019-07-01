@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.std.sms.dao.ICompanyDAO">
+	<resultMap id="company_DB_Result" type="company">
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="prefix" property="prefix" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="name != null and name != '' ">
+				AND t.name = #{name}
+			</if>
+			<if test="prefix != null and prefix != '' ">
+				AND t.prefix = #{prefix}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_company" parameterType="company"
+		resultMap="company_DB_Result">
+		SELECT
+		code
+		,name
+		,prefix
+		FROM
+		tjc_company t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				#{order}
+			</if>
+		</trim>
+	</select>
+</mapper>
